@@ -7,4 +7,11 @@ async function createUserPost(req, res) {
   res.send("Usuario creado");
 }
 
-module.exports = { createUserPost };
+async function logOut(req, res) {
+  req.logout((err) => {
+    if (err) return next(err);
+    res.send("Logout con exito");
+  });
+}
+
+module.exports = { createUserPost, logOut };
