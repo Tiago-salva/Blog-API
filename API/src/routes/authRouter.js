@@ -3,11 +3,12 @@ const { createUserPost, logOut } = require("../controllers/authController");
 const passport = require("passport");
 const authRouter = new Router();
 const jwt = require("jsonwebtoken");
+const { isGuest } = require("../middleware/authMiddleware");
 
 require("dotenv").config();
 
 // Login
-authRouter.post("/login", (req, res, next) => {
+authRouter.post("/login", isGuest, (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
     if (err) return next(err);
     if (!user)
@@ -28,9 +29,13 @@ authRouter.post("/login", (req, res, next) => {
 });
 
 // Sign up
-authRouter.post("/sign-up", createUserPost);
+authRouter.post("/sign-up", isGuest, createUserPost);
 
 // Log out
-authRouter.post("/logout", logOut);
+authRouter.post(
+  "/logout",
+  passport.authenticate("jwt", { session: false }),
+  logOut
+);
 
 module.exports = authRouter;
