@@ -31,4 +31,6 @@ initializePassport(passport);
 app.use("/", authRouter);
 app.use("/posts", postRouter);
 
-app.listen(3000, () => console.log("App listening to port 3000"));
+app.listen(process.env.PORT, () =>
+  console.log(`App listening to port ${process.env.PORT}`)
+);
